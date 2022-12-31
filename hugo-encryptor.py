@@ -35,10 +35,14 @@ if __name__ == '__main__':
                 'div', {'class': 'hugo-encryptor-cipher-text'})
 
             if len(blocks):
+                print("Encrypting: ")
                 print(fullpath)
 
             for block in blocks:
                 md5 = hashlib.md5()
+                if 'data-password' not in block.attrs:
+                    print("Error: No password found in block skip.")
+                    continue
                 md5.update(block['data-password'].encode('utf-8'))
                 key = md5.hexdigest()
                 cryptor = AESCrypt(key)
@@ -48,11 +52,11 @@ if __name__ == '__main__':
                 del block['data-password']
                 block.string = written.decode()
 
-            if len(blocks):
-                soup.body.append(soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
-                script_tag = soup.new_tag("script", src="/decrypt.js")
+            # if len(blocks):
+            #     soup.body.append(soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
+            #     script_tag = soup.new_tag("script", src="/js/decrypt.js")
                 
-                soup.body.append(script_tag)
+            #     soup.body.append(script_tag)
 
             with open(fullpath, 'w', encoding='utf-8') as f:
                 html = str(soup)

@@ -7,12 +7,17 @@
         require param
     - Simple
 
-        {{% hugo-encryptor "your password" %}}
+        ≈hugo-encryptor "your password" %}}
 your content
 {{% /hugo-encryptor %}}
 
 */}}
 {{/* DEFAULTS */}}
+
+{{ if eq hugo.Environment "production" }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+<script src="/js/decrypt.js"></script>
 
 <div class="hugo-encryptor-container">
   <div class="hugo-encryptor-prompt">
@@ -43,3 +48,9 @@ your content
     {{ .Inner }}
   </div>
 </div>
+
+{{ else }}
+
+{{ .Inner }}
+
+{{ end }}
